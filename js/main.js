@@ -184,7 +184,7 @@ var $allcheckboxes = $("fieldset.activities").find("input[type='checkbox']");
 
 //Initializing the checkboxes
 $allcheckboxes.prop("checked", false).attr("disabled", false);;
-    
+
 
 
 //whenever the checkboxes change a change on them
@@ -205,10 +205,10 @@ $allcheckboxes.change(function () {
     if (this.checked) {
         $incompatibleScheduleEvents.attr("disabled", true);
         $incompatibleScheduleEvents.parent().addClass("scheduleWarning");
-    //if the current box is unchecked we have to enable any incompatible activities
+        //if the current box is unchecked we have to enable any incompatible activities
     } else {
         $incompatibleScheduleEvents.attr("disabled", false);
-        
+
         $incompatibleScheduleEvents.parent().removeClass("scheduleWarning");
     }
     //invoke getRunningTotal
@@ -332,7 +332,7 @@ $zip.on("keyup", function () {
     zipIsValid = zipValidation($zip.val());
     console.log(zipIsValid);
 
-ccOk = ccNumIsValid && zipIsValid && cvvIsValid;
+    ccOk = ccNumIsValid && zipIsValid && cvvIsValid;
 
     if (!zipIsValid) {
         $(this).prev().addClass("zipWarning");
@@ -358,20 +358,17 @@ $cvv.on("keyup", function () {
     }
 });
 
+//when the mouse enters the button we either ebale it or disable it
+$submitButton.mouseenter(function (e) {
+    enableButton();
+});
 
-
-
-/*
-This works but I have no idea what can I use to trigger it.
-    Every certain ammount of time?
-    As long as we scroll to the bottom?
-    Anny suggestions
-*/
+//enables or disables the button
 var enableButton = function () {
     if (nameIsValid && emailIsValid && activitiesIsValid && ccOk) {
         console.log("can submit")
         $submitButton.attr("disabled", false)
-    } else if (nameIsValid && emailIsValid && activitiesIsValid && (paymentMethod == "paypal" || paymentMethod == "bitcoin") ) {
+    } else if (nameIsValid && emailIsValid && activitiesIsValid && (paymentMethod == "paypal" || paymentMethod == "bitcoin")) {
         $submitButton.attr("disabled", false)
         console.log("can submit")
     } else {
