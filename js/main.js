@@ -44,7 +44,7 @@ var nameValidation = function (name) {
     return nameRegex.test(name);
 }
 
-$name.on("keyup", function () {
+$name.on("keyup keypress blur change", function () {
     nameIsValid = nameValidation($name.val());
     console.log(nameIsValid);
     if (!nameIsValid) {
@@ -60,7 +60,7 @@ var emailValidation = function (email) {
 }
 
 
-$email.on("keyup", function () {
+$email.on("keyup keypress blur change", function () {
     emailIsValid = emailValidation($email.val());
     console.log(emailIsValid);
     if (!emailIsValid) {
@@ -216,7 +216,7 @@ $allcheckboxes.change(function () {
 });
 
 //We invoke running total as well here on mouse leave
-$("fieldset.activities").on("mouseleave", function () {
+$("fieldset.activities").on("mouseleave blur change click", function () {
     getRunningTotal();
 });
 
@@ -299,7 +299,7 @@ var ccNumLettersValidation = function (ccNum) {
     return ccNumLetterRegex.test(ccNum);
 }
 
-$ccNum.on("keyup", function () {
+$ccNum.on("keyup keypress blur change", function () {
     var ccNumValidLength = ccNumValidation($ccNum.val());
     var ccNumHasLettersSpaces = ccNumLettersValidation($ccNum.val())
     ccNumIsValid = ccNumValidLength && !ccNumHasLettersSpaces;
@@ -328,7 +328,7 @@ var zipValidation = function (zipNum) {
     return zipRegex.test(zipNum);
 }
 
-$zip.on("keyup", function () {
+$zip.on("keyup keypress blur change", function () {
     zipIsValid = zipValidation($zip.val());
     console.log(zipIsValid);
 
@@ -345,7 +345,7 @@ var cvvValidation = function (cvvNum) {
     return cvvRegex.test(cvvNum);
 }
 
-$cvv.on("keyup", function () {
+$cvv.on("keyup keypress blur change", function () {
     cvvIsValid = cvvValidation($cvv.val());
     console.log(cvvIsValid);
 
@@ -358,22 +358,21 @@ $cvv.on("keyup", function () {
     }
 });
 
-//when the mouse enters the button we either ebale it or disable it
-$submitButton.mouseenter(function (e) {
+$submitButton.click(function (e) {
+    e.preventDefault();
     enableButton();
 });
 
-//enables or disables the button
+//if it cannot submit scrolls to the error warnings, else it submits
 var enableButton = function () {
     if (nameIsValid && emailIsValid && activitiesIsValid && ccOk) {
-        console.log("can submit")
-        $submitButton.attr("disabled", false)
+        console.log("can submit");
+        $form.submit();
     } else if (nameIsValid && emailIsValid && activitiesIsValid && (paymentMethod == "paypal" || paymentMethod == "bitcoin")) {
-        $submitButton.attr("disabled", false)
-        console.log("can submit")
+        console.log("can submit");
+        $form.submit();
     } else {
-        $submitButton.attr("disabled", true)
-        console.log("cannot submit")
-
+        console.log("cannot submit");
+        $(window).scrollTop($("[class$='Warning']").offset().top);
     }
 }

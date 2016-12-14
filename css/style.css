@@ -130,7 +130,7 @@ button:hover {
 
 .scheduleWarning::after {
 	content: " - time window unavailable";
-	color: darkred;
+	color: dimgray;
 	font-size: .75rem;
 }
 
