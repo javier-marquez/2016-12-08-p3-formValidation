@@ -123,16 +123,6 @@ button:hover {
 		Validation
 ==================================== */
 
-.scheduleWarning {
-	color: dimgray;
-}
-
-
-.scheduleWarning::after {
-	content: " - time window unavailable";
-	color: dimgray;
-	font-size: .75rem;
-}
 
 .nameWarning::after {
 	content: "	please enter a valid name";
@@ -144,11 +134,27 @@ button:hover {
 	color: red;
 }
 
+.shirtWarning::after {
+	content: " < -  dont forget to choose a shirt";
+	color: red;
+	font-size: 1.3rem;
+}
+
 .noActivitiesWarning::after {
 	content: " - choose at least one activity!";
 	color: darkred;  
 }
 
+.scheduleWarning {
+	color: dimgray;
+}
+
+
+.scheduleWarning::after {
+	content: " - time window unavailable";
+	color: dimgray;
+	font-size: .75rem;
+}
 .ccNumWarning::after {
 	content: " - enter only numbers";
 	color: darkred;  

@@ -81,6 +81,8 @@ var jobRoleValidation = function () {
     var jobRole = $jobRole.val();
     if (jobRole == "other") {
         $("#other-title").slideDown(150).focus();
+    } else {
+        $("#other-title").slideUp(100).focus();        
     }
 }
 
@@ -121,13 +123,20 @@ var findShirt = function (arr) {
         console.log(chosenDesign);
         if (chosenDesign == (element.design)) {
             console.log("found element");
+            
             shirt = element;
-
-        }
+            
+        } 
 
     }, this);
 
     chosenShirt = shirt;
+    //if the chosen shirt is undefined tell the user he needs to choose one
+    if (!chosenShirt){
+    $selectDesign.parent().addClass("shirtWarning");
+    } else {
+    $selectDesign.parent().removeClass("shirtWarning");
+    }
 }
 
 
@@ -176,6 +185,7 @@ $selectDesign.change(function (e) {
     //Create the size and color select
     createSelectElements(chosenShirt, 1, "Size :");
     createSelectElements(chosenShirt, 2, "Color :");
+
 });
 
 /*      ”Register for Activities” section of the form:     */
@@ -201,7 +211,7 @@ $allcheckboxes.change(function () {
     //we filter all the remaining checkboxes by class
     var $incompatibleScheduleEvents = $(this).parent().siblings().children("[type='checkbox']").filter(classFilter);
 
-    //if the current box is checked we have to disable any incompatible activities
+/*    //if the current box is checked we have to disable any incompatible activities
     if (this.checked) {
         $incompatibleScheduleEvents.attr("disabled", true);
         $incompatibleScheduleEvents.parent().addClass("scheduleWarning");
@@ -210,7 +220,14 @@ $allcheckboxes.change(function () {
         $incompatibleScheduleEvents.attr("disabled", false);
 
         $incompatibleScheduleEvents.parent().removeClass("scheduleWarning");
-    }
+    }*/
+
+    //this.checked throws true or false we can ommit the if block above.
+    $incompatibleScheduleEvents.attr("disabled", this.checked);
+    $incompatibleScheduleEvents.parent().toggleClass("scheduleWarning");
+    
+
+
     //invoke getRunningTotal
     getRunningTotal();
 });
@@ -360,15 +377,24 @@ $cvv.on("keyup keypress blur change", function () {
 
 $submitButton.click(function (e) {
     e.preventDefault();
+    $name.trigger("change");
+    $email.trigger("change");
+    findShirt(shirts);
+    $ccNum.trigger("change");
+    $zip.trigger("change");
+    $cvv.trigger("change");
+    getRunningTotal();
     enableButton();
+
+
 });
 
 //if it cannot submit scrolls to the error warnings, else it submits
 var enableButton = function () {
-    if (nameIsValid && emailIsValid && activitiesIsValid && ccOk) {
+    if (nameIsValid && emailIsValid && chosenShirt && activitiesIsValid && ccOk) {
         console.log("can submit");
         $form.submit();
-    } else if (nameIsValid && emailIsValid && activitiesIsValid && (paymentMethod == "paypal" || paymentMethod == "bitcoin")) {
+    } else if (nameIsValid && emailIsValid  && chosenShirt && activitiesIsValid && (paymentMethod == "paypal" || paymentMethod == "bitcoin")) {
         console.log("can submit");
         $form.submit();
     } else {
